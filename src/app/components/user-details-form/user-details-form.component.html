@@ -1,0 +1,47 @@
+<form [formGroup]="addUserFrom" class="form" (ngSubmit)="onSubmit()" >
+  <div formGroupName="userGroup" class="nestedForm">
+    <mat-form-field class="example-full-width">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+    <mat-error *ngIf="addUserFrom.get('userGroup.name')?.hasError('minlength') && !addUserFrom.get('userGroup.name')?.hasError('required')">
+      Please enter a valid name with minimum 3 characters
+    </mat-error>
+    <mat-error *ngIf="addUserFrom.get('userGroup.name')?.hasError('required') && addUserFrom.get('userGroup.name')?.touched">
+      Name is <strong>required</strong>
+    </mat-error>
+    <mat-form-field class="example-full-width">
+      <mat-label>email</mat-label>
+      <input matInput formControlName="email" type="email">
+      <mat-error *ngIf="addUserFrom.get('userGroup.email')?.hasError('email') && !addUserFrom.get('userGroup.email')?.hasError('required')">
+        Please enter a valid email address
+      </mat-error>
+      <mat-error *ngIf="addUserFrom.get('userGroup.email')?.hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-radio-group aria-label="Select an option" formControlName="gender">
+      <mat-radio-button *ngFor="let gender of genders" [value]="gender" (change)="changeGender($event.value)">Male</mat-radio-button>
+    </mat-radio-group>
+
+  </div>
+  <ul class="checkboxes">
+    <li *ngFor="let animal of animals" >
+      <mat-checkbox (change)="onCheckboxChange($event)" [value]="animal.value">
+                  {{animal.name}}
+      </mat-checkbox>
+    </li>
+  </ul>
+  <mat-form-field>
+    <mat-label>City</mat-label>
+    <mat-select  formControlName="city">
+      <mat-option *ngFor="let city of cities" [value]="city">
+        {{city}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="addUserFrom.get('city')?.hasError('required')">
+      City is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <button type="submit" mat-raised-button color="primary">Wyślij</button>
+</form>
